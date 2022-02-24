@@ -22,6 +22,7 @@ def print_word_freq(file):
         # sort the dictionary in ascending values
         word_freq = []
         word_freq = dict(sorted(word_count.items(), key=lambda item: item[1], reverse=True))
+        # format the report
         for key,value in word_freq.items():
             print(f"{key:>20} | {(value * '*'):<20}")
         return word_freq
