@@ -1,5 +1,3 @@
-import string
-
 STOP_WORDS = [
     'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
     'i', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'were',
@@ -10,29 +8,23 @@ def print_word_freq(file):
     """Read in `file` and print out the frequency of words in that file."""
     with open(file) as file:
         text_string = file.read()
-        print(f"{len(text_string)}")
-        print(text_string[0:100])
-        return text_string[0:100]
-# remove the punctuation
-        text_string = text_string.replace(".", "")
-        text_string = text_string.replace(",", "")
-        text_string = text_string.replace("'", "")
-        text_string = text_string.replace("?", "")
-        text_string = text_string.replace("!", "")
-        text_string = text_string.replace("\\n", "")
-        text_string = text_string.replace(":", "")
-        text_string = text_string.replace("[", "")
-        text_string = text_string.replace("]", "")
-        text_string = text_string.replace("\"", "")
-        text_string = text_string.replace("’", "")
-        text_string = text_string.replace("-", "")
-        text_string = text_string.replace("—", "")
-        text_string = text_string.replace('""', "")
-
-# normalize all words to lowercase
+        # remove the punctuation
+        for char in '-—.,\n?!':
+            text_string = text_string.replace(char, ' ')
+        # normalize all words to lowercase and 
         text_string = text_string.lower().split()
-pass
-
+        # remove stop words
+        text_string = [word for word in text_string if word not in STOP_WORDS]
+        # count the words
+        word_count = {}
+        for word in text_string:
+            word_count[word] = word_count.get(word, 0) + 1
+        # sort the dictionary in ascending values
+        word_freq = []
+        word_freq = dict(sorted(word_count.items(), key=lambda item: item[1], reverse=True))
+        for key,value in word_freq.items():
+            print(f"{key:>20} | {(value * '*'):<20}")
+        return word_freq
 
 if __name__ == "__main__":
     import argparse
@@ -49,13 +41,3 @@ if __name__ == "__main__":
     else:
         print(f"{file} does not exist!")
         exit(1)
-
-
-# def clean_text():
-#     text = text.lower()
-#     all_letters = "abcdefghijklmnopqrstuvwxyz"
-#     text_to_keep = ""
-#     for char in text:
-#         if char in all_letters:
-#             text_to_keep += char
-#     return text_to_keep
